@@ -1651,9 +1651,10 @@ static MQTTStatus_t receiveSingleIteration( MQTTContext_t * pContext,
     recvBytes = pContext->transportInterface.recv( pContext->transportInterface.pNetworkContext,
                                                    &( pContext->networkBuffer.pBuffer[ pContext->index ] ),
                                                    pContext->networkBuffer.size - pContext->index );
-
+    LogInfo(("RCV %d bytes from interface", recvBytes));
     if( recvBytes < 0 )
     {
+        
         /* The receive function has failed. Bubble up the error up to the user. */
         status = MQTTRecvFailed;
     }
@@ -1678,6 +1679,7 @@ static MQTTStatus_t receiveSingleIteration( MQTTContext_t * pContext,
         totalMQTTPacketLength = incomingPacket.remainingLength + incomingPacket.headerLength;
     }
 
+    LogInfo(("RCV total length ---- %d", totalMQTTPacketLength));
     /* No data was received, check for keep alive timeout. */
     if( recvBytes == 0 )
     {
@@ -1703,6 +1705,7 @@ static MQTTStatus_t receiveSingleIteration( MQTTContext_t * pContext,
         }
     }
 
+    LogInfo(("RCV---- status -- %d", status));
     /* Check whether there is data available before processing the packet further. */
     if( ( status == MQTTNeedMoreBytes ) || ( status == MQTTNoDataAvailable ) )
     {
