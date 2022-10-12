@@ -1477,7 +1477,7 @@ static MQTTStatus_t handleIncomingPublish( MQTTContext_t * pContext,
                                    pIncomingPacket,
                                    &deserializedInfo );
         }
-
+        LogInfo(("send pubACK back---"));
         /* Send PUBACK or PUBREC if necessary. */
         status = sendPublishAcks( pContext,
                                   packetIdentifier,
@@ -1754,6 +1754,7 @@ static MQTTStatus_t receiveSingleIteration( MQTTContext_t * pContext,
 
         /* Update the index to reflect the remaining bytes in the buffer.  */
         pContext->index -= totalMQTTPacketLength;
+        LogInfo(("Moving buffer --- "));
 
         /* Move the remaining bytes to the front of the buffer. */
         ( void ) memmove( pContext->networkBuffer.pBuffer,
